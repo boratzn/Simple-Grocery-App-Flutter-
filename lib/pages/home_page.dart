@@ -91,7 +91,8 @@ class _HomePageState extends State<HomePage> {
                     return Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Card(
-                        color: Colors.deepPurple.shade100,
+                        elevation: 3,
+                        //color: Colors.deepPurple.shade100,
                         shape: OutlineInputBorder(
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(15)),
@@ -137,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(5),
-                                              color: Colors.green,
+                                              color: Colors.deepPurple.shade300,
                                             ),
                                             width: 100,
                                             height: 35,

@@ -78,7 +78,7 @@ class _MyCartState extends State<MyCart> {
                                     child: Container(
                                       height: 40,
                                       decoration: BoxDecoration(
-                                          color: Colors.green,
+                                          color: Colors.grey.shade300,
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                       child: Row(
@@ -110,7 +110,7 @@ class _MyCartState extends State<MyCart> {
                                             '${yemek.yemek_siparis_adet}',
                                             style: TextStyle(
                                                 fontSize: 18,
-                                                color: Colors.white),
+                                                color: Colors.black),
                                           ),
                                           IconButton(
                                               iconSize: 18,
@@ -131,7 +131,7 @@ class _MyCartState extends State<MyCart> {
                               )
                             ],
                           ),
-                          color: Colors.white30,
+                          color: Colors.white,
                           elevation: 5,
                         ),
                       );
@@ -145,7 +145,7 @@ class _MyCartState extends State<MyCart> {
                     child: Container(
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: Colors.deepPurple.shade400,
                           borderRadius: BorderRadius.circular(8)),
                       width: 250,
                       height: 80,

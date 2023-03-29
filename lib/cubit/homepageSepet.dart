@@ -26,8 +26,10 @@ class HomePageSepetCubit extends Cubit<List<SepetYemekler>> {
       String yemek_fiyat,
       String yemek_siparis_adet,
       String kullanici_adi) async {
-    await yrepo.sepeteEkle(yemek_adi, yemek_resim_adi, yemek_fiyat,
-        yemek_siparis_adet, kullanici_adi);
+    try {
+      await yrepo.sepeteEkle(yemek_adi, yemek_resim_adi, yemek_fiyat,
+          yemek_siparis_adet, kullanici_adi);
+    } catch (e) {}
   }
 
   Future<void> sepettenYemekSil(

@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.deepPurple,
         ),
         home: BlocBuilder<HomePageSepetCubit, List<SepetYemekler>>(
           builder: (contextt, sepettekiYemekler) {
@@ -99,7 +99,10 @@ class _MyAppState extends State<MyApp> {
             icon: BlocBuilder<HomePageSepetCubit, List<SepetYemekler>>(
               builder: (context, sepettekiYemekler) {
                 return badges.Badge(
-                  badgeContent: Text('${sepettekiYemekler.length}'),
+                  badgeContent: Text(
+                    '${sepettekiYemekler.length}',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   showBadge: sepettekiYemekler.length > 0 ? true : false,
                   child: Icon(Icons.shopping_cart),
                 );
