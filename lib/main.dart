@@ -27,23 +27,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int currentIndex = 0;
   String username = '';
-  late bool flag;
   var sp;
 
   Future<void> initSp() async {
     sp = await SharedPreferences.getInstance();
-  }
-
-  Future<bool> oturumKontrol() async {
-    var sp = await SharedPreferences.getInstance();
-    String username = sp.getString('kullaniciAdi') ?? 'kullanıcı adı yok';
-    String password = sp.getString('sifre') ?? 'sifre yok';
-
-    if (username == 'boratzn' && password == '123') {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   @override
