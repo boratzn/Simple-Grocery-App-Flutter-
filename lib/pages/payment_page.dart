@@ -1,8 +1,15 @@
 import 'package:awesome_card/awesome_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:math' as math;
 
 import 'package:grocery_app/consts/constants.dart';
+import 'package:grocery_app/cubit/homepageSepet.dart';
+import 'package:grocery_app/cubit/index_provider.dart';
+import 'package:grocery_app/entity/sepet_yemekler.dart';
+import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_options.dart';
+import 'package:quickalert/quickalert.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
@@ -57,7 +64,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 cvv: cvv,
                 bankName: 'Axis Bank',
                 showBackSide: showBack,
-                frontBackground: CardBackgrounds.black,
+                frontBackground: CardBackgrounds.custom(0xFF9E9E9E),
                 backBackground: CardBackgrounds.white,
                 showShadow: true,
                 // mask: getCardTypeMask(cardType: CardType.americanExpress),
@@ -139,9 +146,10 @@ class _PaymentPageState extends State<PaymentPage> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 25),
                     child: TextFormField(
-                      decoration: InputDecoration(hintText: 'CVV'),
+                      decoration: const InputDecoration(hintText: 'CVV'),
                       maxLength: 3,
                       onChanged: (value) {
                         setState(() {
@@ -151,33 +159,81 @@ class _PaymentPageState extends State<PaymentPage> {
                       focusNode: _focusNode,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+                  BlocBuilder<HomePageSepetCubit, List<SepetYemekler>>(
+                    builder: (context, sepettekiYemekler) {
+                      Constants.toplamTutar =
+                          Constants.tutarHesapla(sepettekiYemekler);
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20.0, right: 20, bottom: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Toplam Tutar : ",
-                              style: TextStyle(fontSize: 18),
+                            Row(
+                              children: [
+                                const Text(
+                                  "Toplam Tutar : ",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                Text(
+                                  "${Constants.toplamTutar.toString()}₺",
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
                             ),
-                            Text(
-                              "${Constants.toplamTutar.toString()}₺",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold),
+                            Consumer<IndexProvider>(
+                              builder: (context, value, child) {
+                                return ElevatedButton(
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 8),
+                                    child: Text(
+                                      "Ödeme Yap",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    if (sepettekiYemekler.length > 0) {
+                                      QuickAlert.show(
+                                        confirmBtnColor: Colors.deepPurple,
+                                        confirmBtnText: "Anasayfaya Dön",
+                                        title: "Ödeme Başarılı",
+                                        context: context,
+                                        type: QuickAlertType.success,
+                                        text: "Siparişiniz Alındı.",
+                                      ).then((_) {
+                                        for (var yemek in sepettekiYemekler) {
+                                          context
+                                              .read<HomePageSepetCubit>()
+                                              .sepettenYemekSil(
+                                                  yemek.sepet_yemek_id,
+                                                  yemek.kullanici_adi);
+                                        }
+                                        value.changeIndex(0);
+                                      });
+                                    } else {
+                                      QuickAlert.show(
+                                        confirmBtnColor: Colors.deepPurple,
+                                        confirmBtnText: "Anasayfaya Dön",
+                                        title: "Sepetiniz Boş!",
+                                        context: context,
+                                        type: QuickAlertType.warning,
+                                      ).then((_) {
+                                        value.changeIndex(0);
+                                      });
+                                    }
+                                  },
+                                );
+                              },
                             )
                           ],
                         ),
-                        ElevatedButton(
-                          child: Text("Ödeme Yap"),
-                          onPressed: () {},
-                        )
-                      ],
-                    ),
+                      );
+                    },
                   )
                 ],
               )

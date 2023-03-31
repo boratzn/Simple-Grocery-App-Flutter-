@@ -30,9 +30,6 @@ class _MyCartState extends State<MyCart> {
 
   @override
   Widget build(BuildContext context) {
-    context
-        .read<HomePageSepetCubit>()
-        .sepettekiYemekleriGetir(Constants.kullaniciAdi);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
@@ -43,11 +40,11 @@ class _MyCartState extends State<MyCart> {
       body: BlocBuilder<HomePageSepetCubit, List<SepetYemekler>>(
         builder: (context, sepettekiYemekler) {
           if (sepettekiYemekler.isNotEmpty) {
-            Constants.toplamTutar = _tutarHesapla(sepettekiYemekler);
+            Constants.toplamTutar = Constants.tutarHesapla(sepettekiYemekler);
             return Stack(
               children: [
                 Container(
-                  height: 510,
+                  height: 500,
                   child: ListView.builder(
                     padding: EdgeInsets.all(8),
                     itemCount: sepettekiYemekler.length,
@@ -225,15 +222,5 @@ class _MyCartState extends State<MyCart> {
         },
       ),
     );
-  }
-
-  double _tutarHesapla(List<SepetYemekler> sepettekiYemekler) {
-    double toplam = 0;
-    for (var yemek in sepettekiYemekler) {
-      toplam +=
-          (int.parse(yemek.yemek_fiyat) * int.parse(yemek.yemek_siparis_adet));
-    }
-
-    return toplam;
   }
 }

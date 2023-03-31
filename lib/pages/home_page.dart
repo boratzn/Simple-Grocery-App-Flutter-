@@ -67,11 +67,12 @@ class _HomePageState extends State<HomePage> {
               Consumer<IndexProvider>(
                 builder: (context, value, child) {
                   return IconButton(
-                      onPressed: () {
-                        value.singIn(false);
-                        signOut();
-                      },
-                      icon: Icon(Icons.exit_to_app));
+                    onPressed: () {
+                      value.singIn(false);
+                      signOut();
+                    },
+                    icon: Icon(Icons.exit_to_app),
+                  );
                 },
               )
             ],

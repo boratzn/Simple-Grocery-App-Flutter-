@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grocery_app/consts/constants.dart';
 import 'package:grocery_app/cubit/homepageSepet.dart';
 import 'package:grocery_app/cubit/homepage_cubit.dart';
 import 'package:grocery_app/cubit/index_provider.dart';
@@ -28,24 +29,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int currentIndex = 0;
   String kullanici_adi = '';
-  var sp;
-
-  Future<void> initSp() async {
-    sp = await SharedPreferences.getInstance();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initSp().then((value) {
-      kullanici_adi = sp.getString('kullaniciAdi').toString();
-    });
-  }
 
   final pages = [HomePage(), MyCart(), PaymentPage()];
 
   @override
   Widget build(BuildContext context) {
+    Constants.initSp();
+    kullanici_adi = Constants.kullaniciAdi;
+    debugPrint(" Kullanıcı Adı : $kullanici_adi");
     return MultiBlocProvider(
       providers: [
         BlocProvider(
