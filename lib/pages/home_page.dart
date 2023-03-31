@@ -20,8 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   var url = "http://kasimadalan.pe.hu/yemekler/resimler/";
 
-  late String kullaniciAdi;
-  late String sifre;
+  String kullaniciAdi = "";
 
   Future<void> signOut() async {
     var sp = await SharedPreferences.getInstance();
@@ -30,9 +29,16 @@ class _HomePageState extends State<HomePage> {
     sp.remove('sifre');
   }
 
+  Future<void> initSp() async {
+    var sp = await SharedPreferences.getInstance();
+
+    kullaniciAdi = sp.getString("kullaniciAdi") ?? "kullanıcı yok";
+  }
+
   @override
   void initState() {
     super.initState();
+    initSp();
     context.read<HomePageCubit>().yemekleriGetir();
   }
 
@@ -132,7 +138,11 @@ class _HomePageState extends State<HomePage> {
                                                     yemek.yemek_resim_adi,
                                                     yemek.yemek_fiyat,
                                                     "1",
-                                                    "boratzn");
+                                                    kullaniciAdi);
+                                            context
+                                                .read<HomePageSepetCubit>()
+                                                .sepettekiYemekleriGetir(
+                                                    kullaniciAdi);
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(

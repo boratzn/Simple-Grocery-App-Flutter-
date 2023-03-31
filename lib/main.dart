@@ -7,6 +7,7 @@ import 'package:grocery_app/entity/sepet_yemekler.dart';
 import 'package:grocery_app/pages/home_page.dart';
 import 'package:grocery_app/pages/login_page.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:grocery_app/pages/payment_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int currentIndex = 0;
-  String username = '';
+  String kullanici_adi = '';
   var sp;
 
   Future<void> initSp() async {
@@ -37,14 +38,11 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     initSp().then((value) {
-      username = sp.getString('kullaniciAdi').toString();
+      kullanici_adi = sp.getString('kullaniciAdi').toString();
     });
   }
 
-  final pages = [
-    HomePage(),
-    MyCart(),
-  ];
+  final pages = [HomePage(), MyCart(), PaymentPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -66,22 +64,15 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
         ),
-        home: BlocBuilder<HomePageSepetCubit, List<SepetYemekler>>(
-          builder: (contextt, sepettekiYemekler) {
-            return Consumer<IndexProvider>(
-              builder: (context, currentIndexNesne, child) {
-                contextt
-                    .read<HomePageSepetCubit>()
-                    .sepettekiYemekleriGetir(username);
-                return Scaffold(
-                    bottomNavigationBar: currentIndexNesne.isSignIn
-                        ? _bottomNavBar(currentIndexNesne)
-                        : null,
-                    body: currentIndexNesne.isSignIn
-                        ? pages[currentIndex]
-                        : LoginPage());
-              },
-            );
+        home: Consumer<IndexProvider>(
+          builder: (context, currentIndexNesne, child) {
+            return Scaffold(
+                bottomNavigationBar: currentIndexNesne.isSignIn
+                    ? _bottomNavBar(currentIndexNesne)
+                    : null,
+                body: currentIndexNesne.isSignIn
+                    ? pages[currentIndexNesne.getIndex()]
+                    : LoginPage());
           },
         ),
       ),
@@ -90,7 +81,7 @@ class _MyAppState extends State<MyApp> {
 
   BottomNavigationBar _bottomNavBar(IndexProvider currentIndexNesne) {
     return BottomNavigationBar(
-      currentIndex: currentIndex,
+      currentIndex: currentIndexNesne.getIndex(),
       backgroundColor: Colors.deepPurple.shade100,
       items: [
         const BottomNavigationBarItem(
@@ -98,6 +89,9 @@ class _MyAppState extends State<MyApp> {
         BottomNavigationBarItem(
             icon: BlocBuilder<HomePageSepetCubit, List<SepetYemekler>>(
               builder: (context, sepettekiYemekler) {
+                context
+                    .read<HomePageSepetCubit>()
+                    .sepettekiYemekleriGetir(kullanici_adi);
                 return badges.Badge(
                   badgeContent: Text(
                     '${sepettekiYemekler.length}',
@@ -110,11 +104,10 @@ class _MyAppState extends State<MyApp> {
             ),
             label: 'Sepet'),
         const BottomNavigationBarItem(
-            icon: Icon(Icons.settings), label: 'Ayarlar'),
+            icon: Icon(Icons.payment), label: 'Ödeme Yap'),
       ],
       onTap: (index) {
         currentIndexNesne.changeIndex(index);
-        currentIndex = currentIndexNesne.getIndex();
       },
     );
   }

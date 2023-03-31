@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grocery_app/cubit/homepage_cubit.dart';
+import 'package:grocery_app/cubit/index_provider.dart';
 import 'package:grocery_app/entity/sepet_yemekler.dart';
+import 'package:grocery_app/pages/payment_page.dart';
+import 'package:provider/provider.dart';
 
 import '../consts/constants.dart';
 import '../cubit/homepageSepet.dart';
@@ -19,15 +22,21 @@ class _MyCartState extends State<MyCart> {
   @override
   void initState() {
     super.initState();
-    context.read<HomePageSepetCubit>().sepettekiYemekleriGetir("boratzn");
+    Constants.initSp();
+    context
+        .read<HomePageSepetCubit>()
+        .sepettekiYemekleriGetir(Constants.kullaniciAdi);
   }
 
   @override
   Widget build(BuildContext context) {
+    context
+        .read<HomePageSepetCubit>()
+        .sepettekiYemekleriGetir(Constants.kullaniciAdi);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
-        title: Text(
+        title: const Text(
           'Sepetim',
         ),
       ),
@@ -70,7 +79,7 @@ class _MyCartState extends State<MyCart> {
                                         color: Colors.red,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 8,
                                   ),
                                   Padding(
@@ -169,25 +178,34 @@ class _MyCartState extends State<MyCart> {
                               )
                             ],
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white)),
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Şimdi Öde',
-                                    style: TextStyle(color: Colors.white),
+                          Consumer<IndexProvider>(
+                            builder: (context, value, child) {
+                              return GestureDetector(
+                                onTap: () {
+                                  value.changeIndex(2);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white)),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          'Şimdi Öde',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Colors.white,
+                                          size: 16,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: Colors.white,
-                                    size: 16,
-                                  )
-                                ],
-                              ),
-                            ),
+                                ),
+                              );
+                            },
                           )
                         ],
                       ),
