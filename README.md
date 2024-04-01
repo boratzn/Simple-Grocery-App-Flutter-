@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+<img src="https://github.com/boratzn/tobeto_app/blob/main/screenshots/login_screen.jpg" width="230" height="460">
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
