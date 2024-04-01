@@ -2,7 +2,7 @@
 
 A new Flutter project.
 
-<img src="https://github.com/boratzn/tobeto_app/blob/main/screenshots/login_screen.jpg" width="230" height="460">
+<img src="https://github.com/boratzn/Simple-Grocery-App-Flutter-/blob/master/screenshots/grocery1.png" width="230" height="460"> <img src="https://github.com/boratzn/Simple-Grocery-App-Flutter-/blob/master/screenshots/grocery2.png" width="230" height="460"> <img src="https://github.com/boratzn/Simple-Grocery-App-Flutter-/blob/master/screenshots/grocey3.png" width="230" height="460"> <img src="https://github.com/boratzn/Simple-Grocery-App-Flutter-/blob/master/screenshots/grocery4.png" width="230" height="460">
 
 ## Getting Started
 
